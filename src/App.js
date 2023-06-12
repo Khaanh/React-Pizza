@@ -22,7 +22,6 @@ function App() {
             {pizzas.map((obj) => (
               <PizzaBlock key={obj.id} {...obj} />
             ))}
-            {/* <PizzaBlock title="Мексиканская" price="500" /> */}
           </div>
         </div>
       </div>
