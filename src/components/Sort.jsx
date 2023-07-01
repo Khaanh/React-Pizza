@@ -1,19 +1,24 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
 
-function Sort({ value, onChangeSort }) {
+const list = [
+  { name: 'популярность(DESC)', sortProperty: 'rating' },
+  { name: 'популярность(ASC)', sortProperty: '-rating' },
+  { name: 'цене(DESC)', sortProperty: 'price' },
+  { name: 'цене(ASC)', sortProperty: '-price' },
+  { name: 'алфавиту(DESC)', sortProperty: 'title' },
+  { name: 'алфавиту(ASC)', sortProperty: '-title' }
+];
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector(state => state.filter.sort);
   const [open, setOpen] = useState(false);
-  const list = [
-    { name: 'популярность(DESC)', sortProperty: 'rating' },
-    { name: 'популярность(ASC)', sortProperty: '-rating' },
-    { name: 'цене(DESC)', sortProperty: 'price' },
-    { name: 'цене(ASC)', sortProperty: '-price' },
-    { name: 'алфавиту(DESC)', sortProperty: 'title' },
-    { name: 'алфавиту(ASC)', sortProperty: '-title' }
-  ];
 
   const onClickListItem = (i) => {
-    onChangeSort(i)
-    setOpen(false)
+    dispatch(setSort());
+    setOpen(false);
   }
   return (
     <div className="sort">
@@ -31,7 +36,7 @@ function Sort({ value, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{value.name}</span>
+        <span onClick={() => setOpen(!open)}>{sort.name}</span>
       </div>
       <div className="sort__popup">
         {
@@ -39,7 +44,7 @@ function Sort({ value, onChangeSort }) {
             <ul>
               {
                 list.map((obj, i) => (
-                  <li key={i} onClick={() => onClickListItem(obj)} className={value.sortProperty === obj.sortProperty ? 'active' : ''}> {obj.name} </li>
+                  <li key={i} onClick={() => onClickListItem(obj)} className={sort.sortProperty === obj.sortProperty ? 'active' : ''}> {obj.name} </li>
                 ))
               }
             </ul>
